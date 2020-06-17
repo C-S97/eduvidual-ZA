@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect } from 'react';
+import React, { Component } from 'react';
 import { Form, Input, Button } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
@@ -13,6 +13,7 @@ interface State {
 
 
 class Register extends Component<Props, State> {
+
     render() {
         const onFinish = (values: any) => {
             console.log('Finish:', values);
@@ -34,7 +35,7 @@ class Register extends Component<Props, State> {
                             name="username"
                             rules={[{ required: true, message: 'Please input your username!' }]}
                         >
-                            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" onChange={(event) => { }} />
                         </Form.Item>
                         <Form.Item
                             name="firstname"
@@ -50,9 +51,9 @@ class Register extends Component<Props, State> {
                         </Form.Item>
                         <Form.Item
                             name="password"
-                            rules={[{ required: true, message: 'Please input your lastname!' }]}
+                            rules={[{ required: true, message: 'Please input your password!' }]}
                         >
-                            <Input
+                            <Input.Password
                                 prefix={<LockOutlined className="site-form-item-icon" />}
                                 type="password"
                                 placeholder="Password"
@@ -63,7 +64,6 @@ class Register extends Component<Props, State> {
                                 <Button
                                     type="primary"
                                     htmlType="submit"
-                                    disabled={true}
                                 >
                                     Register
                                 </Button>
