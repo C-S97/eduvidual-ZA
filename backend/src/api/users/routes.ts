@@ -1,7 +1,6 @@
 import { Server } from '@hapi/hapi';
 import { Connection } from 'mongoose';
 import UserController from "./user-controller";
-import { IRegisterRequest } from "../../interfaces/request";
 
 export default (
     server: Server,
@@ -17,4 +16,11 @@ export default (
         path: '/user/create',
         handler: (req, h) => userController.createUser(req, h)
     });
+
+    // TODO: User info Route
+    // server.route({
+    //     method: 'GET',
+    //     path: '/user/info',
+    //     handler: (req, h) => userController.createUser(req, h)
+    // });
 }

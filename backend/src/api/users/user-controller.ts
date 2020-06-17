@@ -12,7 +12,6 @@ export default class UserController {
 
     public userInfo = async (request: Request, h: ResponseToolkit) => {
 
-
     }
 
     public createUser = async (request: IRegisterRequest, h: ResponseToolkit) => {
@@ -34,21 +33,25 @@ export default class UserController {
         })
 
         if (validatedUser.error == null) {
-            const user = new User({
-                username: username,
-                firstname: firstname,
-                lastname: lastname,
-                email: email,
-                password: password
-            });
+            if (User.findOne({ email: email }) != null) {
+                return ({ error: "User already exists." });
+            } else {
+                const user = new User({
+                    username: username,
+                    firstname: firstname,
+                    lastname: lastname,
+                    email: email,
+                    password: password
+                });
 
-            await user.save((err, user) => {
-                if (err != null) {
-                    return ({ status: 404, message: "An error occurred while creating the User" });
-                }
-            });
+                await user.save((err, _) => {
+                    if (err != null) {
+                        return ({ status: 404, message: "An error occurred while creating the User" });
+                    }
+                });
 
-            return ({ status: 200, message: "User was Successfully created" })
+                return ({ status: 200, message: "User was Successfully created" });
+            }
         } else {
             return ({ error: validatedUser.error.details });
         }
