@@ -1,6 +1,7 @@
 import { Connection } from "mongoose";
 import { Request, ResponseToolkit } from "@hapi/hapi";
-import User from "../../models/User";
+import User, { userValidateSchema } from "../../models/User";
+import { IRegisterRequest } from "../../interfaces/request";
 
 export default class UserController {
     private database: Connection;
@@ -9,17 +10,30 @@ export default class UserController {
         this.database = database;
     }
 
-    public createUser = async (request: Request, h: ResponseToolkit) => {
+    public userInfo = async (request: Request, h: ResponseToolkit) => {
 
-        console.log(request.payload);
+
+    }
+
+    public createUser = async (request: IRegisterRequest, h: ResponseToolkit) => {
+
         const payload: any = request.payload;
-        const username: string | null = payload.username ? payload.username : null;
-        const firstname: string | null = payload.firstname ? payload.firstname : null;
-        const lastname: string | null = payload.lastname ? payload.lastname : null;
-        const email: string | null = payload.email ? payload.email : null;
-        const password: string | null = payload.password ? payload.password : null;
 
-        if (username != null && firstname != null && lastname != null && email != null && password != null) {
+        const username: string = payload.username;
+        const firstname: string = payload.firstname;
+        const lastname: string = payload.lastname;
+        const email: string = payload.email;
+        const password: string = payload.password;
+
+        const validatedUser = userValidateSchema.validate({
+            username: username,
+            firstname: firstname,
+            lastname: lastname,
+            email: email,
+            password: password
+        })
+
+        if (validatedUser.error == null) {
             const user = new User({
                 username: username,
                 firstname: firstname,
@@ -36,8 +50,7 @@ export default class UserController {
 
             return ({ status: 200, message: "User was Successfully created" })
         } else {
-            console.log(username);
-            return ({ status: 404 })
+            return ({ error: validatedUser.error.details });
         }
     }
 }
