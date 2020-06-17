@@ -14,7 +14,7 @@ const init = async () => {
 
     await server.start();
     console.log("server is running on %s", server.info.uri);
-
+    console.log("The Databse and Server are ready to use.");
 
 };
 
@@ -24,4 +24,3 @@ process.on('unhandledRejection', (err) => {
 });
 
 init();
-console.log("The Databse and Server are ready to use.");
