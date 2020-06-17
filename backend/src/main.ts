@@ -1,5 +1,6 @@
 import * as Hapi from '@hapi/hapi';
 import * as mongoose from 'mongoose';
+import routes from './api/users/routes';
 
 const init = async () => {
     await mongoose.connect('mongodb://localhost/eduvidual', { useNewUrlParser: true, useUnifiedTopology: true });
@@ -11,6 +12,8 @@ const init = async () => {
         port: 2020,
         host: 'localhost'
     });
+    
+    routes(server, db);
 
     await server.start();
     console.log("server is running on %s", server.info.uri);
